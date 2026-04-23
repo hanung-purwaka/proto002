@@ -34,6 +34,7 @@ function createInitialState() {
     lastAction:
       'Build toward 21. The timer reaches game over at 100%.',
     gameOver: false,
+    outcome: null,
   }
 }
 
@@ -82,6 +83,7 @@ function App() {
             monsterTimer: nextTimer,
             lastAction: 'The timer reached 100%.',
             gameOver: true,
+            outcome: 'lose',
           }
         }
 
@@ -109,11 +111,18 @@ function App() {
         return current
       }
 
+      const nextBoardTiles = current.boardTiles.filter((entry) => entry.id !== tileId)
+      const boardCleared = nextBoardTiles.length === 0
+
       return {
         ...current,
         tray: [...current.tray, tile],
-        boardTiles: current.boardTiles.filter((entry) => entry.id !== tileId),
-        lastAction: `Tile ${tile.value} moved into the tray.`,
+        boardTiles: nextBoardTiles,
+        lastAction: boardCleared
+          ? `Tile ${tile.value} moved into the tray. You cleared the board.`
+          : `Tile ${tile.value} moved into the tray.`,
+        gameOver: boardCleared,
+        outcome: boardCleared ? 'win' : current.outcome,
       }
     })
   }
@@ -143,24 +152,21 @@ function App() {
         lastAction = `${total} lowers the timer by ${reduction.toFixed(1)}%.`
       }
 
-      const gameOver = monsterTimer >= TIMER_LIMIT
       const boardCleared = current.boardTiles.length === 0
-      const shouldDealNewBoard = boardCleared && !gameOver
-      const nextRound = shouldDealNewBoard ? current.round + 1 : current.round
+      const gameOver = monsterTimer >= TIMER_LIMIT || boardCleared
 
       return {
-        round: nextRound,
-        boardTiles: shouldDealNewBoard
-          ? createBoardTiles(nextRound)
-          : current.boardTiles,
+        round: current.round,
+        boardTiles: current.boardTiles,
         tray: [],
         monsterTimer,
         lastAction: gameOver
-          ? `${lastAction} The timer reached 100%.`
-          : shouldDealNewBoard
-            ? `${lastAction} The board was cleared, so a new set of tiles appears.`
-            : lastAction,
+          ? monsterTimer >= TIMER_LIMIT
+            ? `${lastAction} The timer reached 100%.`
+            : `${lastAction} You cleared the board.`
+          : lastAction,
         gameOver,
+        outcome: monsterTimer >= TIMER_LIMIT ? 'lose' : boardCleared ? 'win' : current.outcome,
       }
     })
   }
@@ -266,8 +272,12 @@ function App() {
 
           {game.gameOver ? (
             <div className="overlay">
-              <h3>Game Over</h3>
-              <p>The timer reached 100%.</p>
+              <h3>{game.outcome === 'win' ? 'You Win' : 'Game Over'}</h3>
+              <p>
+                {game.outcome === 'win'
+                  ? 'You cleared every tile on the board.'
+                  : 'The timer reached 100%.'}
+              </p>
               <button className="overlay-button" type="button" onClick={restartGame}>
                 Restart
               </button>
