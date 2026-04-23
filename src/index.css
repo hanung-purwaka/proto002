@@ -1,0 +1,41 @@
+:root {
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #201d55;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.85), transparent 28%),
+    radial-gradient(circle at 20% 20%, rgba(112, 255, 228, 0.45), transparent 22%),
+    radial-gradient(circle at 80% 82%, rgba(255, 212, 92, 0.32), transparent 20%),
+    linear-gradient(180deg, #a6f4ff 0%, #8bbdff 42%, #8e89ff 72%, #7361e8 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100svh;
+}
+
+body {
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  overflow: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
