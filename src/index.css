@@ -22,7 +22,7 @@ html,
 body,
 #root {
   min-width: 320px;
-  min-height: 100svh;
+  min-height: 100dvh;
 }
 
 body {
@@ -30,7 +30,14 @@ body {
   display: grid;
   place-items: center;
   padding: 8px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media (max-width: 430px) {
+  body {
+    padding: 4px;
+  }
 }
 
 button,
