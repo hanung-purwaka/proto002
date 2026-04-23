@@ -1,8 +1,8 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 
-const BOARD_ROWS = 7
-const BOARD_COLUMNS = 6
+const BOARD_ROWS = 9
+const BOARD_COLUMNS = 8
 const BOARD_TILE_COUNT = BOARD_ROWS * BOARD_COLUMNS
 const TRAY_LIMIT = 5
 const TARGET_SCORE = 21
